@@ -13,7 +13,7 @@ if test ! $(which brew); then
 fi
 
 # Update homebrew recipes
-echo "Updating brew using `update && upgrade`"
+echo "Updating brew using update && upgrade"
 brew update && brew upgrade
 
 echo "Executing Brewfile - CLI, CASK, APPSTORE"
