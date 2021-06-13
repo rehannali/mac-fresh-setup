@@ -1,0 +1,15 @@
+[user]
+	name = Rehan Ali
+	email = rehan.shaukat@epsystems.pk
+[core]
+	excludesfile = /Users/rehanali/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Users/rehanali/Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/rehanali/.stCommitMsg
+[init]
+	defaultBranch = master
