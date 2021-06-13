@@ -136,5 +136,6 @@ mas "Pages", id: 409201541
 mas "Paste JSON as Code • quicktype", id: 1330801220
 mas "Realm Browser", id: 1007457278
 mas "Swiftify for Xcode", id: 1183412116
+mas "Speedify", id: 999025824
 mas "Text Toolset", id: 1157225201
 mas "Xcode", id: 497799835
