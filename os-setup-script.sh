@@ -70,18 +70,18 @@ echo "Installing ZSH Auto Suggestiong plugin"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 
-echo "Installing Flutter"
-git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
-export PATH="$HOME/.flutter/bin:$PATH"
+# echo "Installing Flutter"
+# git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
+# export PATH="$HOME/.flutter/bin:$PATH"
 
-echo "Configuring Flutter"
-flutter precache
+# echo "Configuring Flutter"
+# flutter precache
 
-echo "Flutter Channel"
-flutter channel
+# echo "Flutter Channel"
+# flutter channel
 
-echo "Flutter Doctor"
-flutter doctor -v
+# echo "Flutter Doctor"
+# flutter doctor -v
 
 echo "Copying configuration file to Home Directory..."
 files="gitconfig hyper.js p10k.zsh zsh_history zshrc"

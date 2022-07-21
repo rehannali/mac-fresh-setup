@@ -120,8 +120,8 @@ export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/h
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/anaconda3/bin:$PATH" 
-export PATH="$HOME/.flutter/bin:$PATH"
+# export PATH="/usr/local/anaconda3/bin:$PATH" 
+# export PATH="$HOME/.flutter/bin:$PATH"
 
 # Custom ENV Variable
 export PYTHONDONTWRITEBYTECODE=1
