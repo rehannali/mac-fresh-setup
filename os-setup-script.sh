@@ -6,6 +6,16 @@ echo "Starting setup"
 # install xcode CLI
 xcode-select —-install
 
+# Add initial configuration for M1 MacBook's
+if [[ $(uname -m) == 'arm64' ]]; then
+    echo "Configuring Settings for M1 MacBook's"
+    export PATH="/opt/homebrew/bin:$PATH"
+    cd config
+    awk '/usr\/local\/sbin/ { print; print "export PATH=\"\/opt\/homebrew\/bin:$PATH\""; next }1' .zshrc > .zshrc.new
+    rm -f .zshrc && mv .zshrc.new .zshrc
+    cd ..
+fi
+
 # Check for Homebrew to be present, install if it's missing
 if test ! $(which brew); then
     echo "Installing homebrew..."
@@ -34,10 +44,10 @@ curl -sSL https://get.rvm.io | bash -s stable
 
 echo "Installing Additional Software / Utilities and configuration..."
 # SDK Manager
-sdk i java 8.0.292.hs-adpt
-sdk i java 11.0.11.hs-adpt
-sdk i java 16.0.1-open
-sdk u java 11.0.11.hs-adpt
+sdk i java 8.0.342-amzn
+sdk i java 11.0.2-open
+sdk i java 16.0.2-open
+sdk u java 11.0.2-open
 # Ruby
 
 rvm install ruby-2.6
