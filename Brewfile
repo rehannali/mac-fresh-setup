@@ -1,5 +1,3 @@
-# tap "dart-lang/dart"
-tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-drivers"
@@ -7,8 +5,6 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
-tap "nextdns/tap"
-# tap "sass/sass"
 tap "teamookla/speedtest"
 
 # set arguments for all 'brew cask install' commands
@@ -24,16 +20,11 @@ brew "autoconf"
 brew "automake"
 brew "bat"
 brew "bitwarden-cli"
-brew "bpytop"
-brew "python@3.8"
-brew "python@3.9"
-brew "python@3.10"
+#brew "bpytop"
 brew "glib"
 brew "carthage"
 brew "coreutils"
-brew "ruby"
 brew "fastlane"
-brew "pkg-config"
 brew "harfbuzz"
 brew "ffmpeg"
 brew "gh"
@@ -56,13 +47,17 @@ brew "mkcert"
 # brew "mysql"
 brew "nginx", restart_service: true
 brew "neovim"
-brew "openconnect"
 brew "opencv@3"
-brew "openvpn"
-brew "openconnect"
+#brew "openvpn"
+#brew "openconnect"
+brew "pkg-config"
 brew "pyenv"
+brew "python@3.9"
+brew "python@3.10"
+brew "python@3.11"
 brew "rbenv"
 brew "ruby-build"
+brew "ruby"
 brew "rclone"
 brew "rsync"
 brew "subversion"
@@ -74,9 +69,6 @@ brew "whalebrew"
 brew "youtube-dl"
 brew "zlib"
 brew "zsh"
-brew "zsh-completions"
-brew "nextdns/tap/nextdns"
-# brew "sass/sass/sass"
 brew "teamookla/speedtest/speedtest"
 
 # Installing casks
@@ -88,10 +80,16 @@ cask "android-platform-tools"
 cask "clickup"
 cask "docker"
 cask "easyfind"
-# cask "firefox"
+cask "firefox"
 cask "font-fira-code"
 cask "font-source-code-pro"
 cask "font-cascadia-code"
+cask "font-cascadia-code-pl"
+cask "font-caskaydia-cove-nerd-font"
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "font-sauce-code-pro-nerd-font"
 cask "forticlient-vpn"
 # cask "gotomeeting"
 cask "google-chrome"
@@ -100,11 +98,10 @@ cask "hp-easy-start"
 cask "iterm2"
 cask "itsycal"
 cask "jetbrains-toolbox"
-cask "kite"
 cask "little-snitch"
 cask "micro-snitch"
 cask "microsoft-office"
-cask "microsoft-teams"
+#cask "microsoft-teams"
 cask "macfuse"
 cask "osxfuse"
 cask "postman"
@@ -134,15 +131,18 @@ cask "webpquicklook"
 
 # App store installation
 mas "Amphetamine", id: 937984704
+mas "Bitwarden", id: 1352778147
 mas "Encrypto", id: 935235287
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
+#mas "iMovie", id: 408981434
+#mas "Keynote", id: 409183694
 mas "Mactracker", id: 430255202
-# mas "NordVPN IKE", id: 1116599239
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Paste JSON as Code • quicktype", id: 1330801220
-mas "Realm Browser", id: 1007457278
+mas "NordVPN", id: 905953485
+mas "NextDNS", id: 1464122853
+#mas "Numbers", id: 409203825
+#mas "Pages", id: 409201541
+#mas "Paste JSON as Code • quicktype", id: 1330801220
+#mas "Realm Browser", id: 1007457278
+mas "Spark", id: 1176895641
 mas "Swiftify for Xcode", id: 1183412116
-# mas "Speedify", id: 999025824
+mas "Speedify", id: 999025824
 mas "Text Toolset", id: 1157225201
