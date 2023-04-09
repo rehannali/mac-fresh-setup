@@ -4,7 +4,7 @@
 echo "Starting setup"
 
 # install xcode CLI
-xcode-select —-install
+sudo xcode-select —-install
 
 # Add initial configuration for M1 MacBook's
 if [[ $(uname -m) == 'arm64' ]]; then
@@ -70,8 +70,8 @@ mkdir -p ~/.config/spaceship
 
 echo "Checking if spaceship file is available"
 if test -f "~/.config/spaceship/spaceship.zsh"; then
-    echo "spaceship file is available and removing it."
-    rm -f ~/.config/spaceship/spaceship.zsh
+    echo "spaceship file is available and perform back up."
+    mv ~/.config/spaceship/spaceship.zsh ~/.config/spaceship/spaceship.zsh.bak
 fi
 
 cp -af ./config/spaceship.zsh ~/.config/spaceship/spaceship.zsh
@@ -89,8 +89,8 @@ rsync -azhP lua ~/.config/nvim/
 
 echo "Checking if tmux is available in home directory"
 if test -f "~/.tmux.conf"; then
-    echo "Found tmux file in home directory and removing it."
-    rm -f ~/.tmux.conf
+    echo "Found tmux file in home directory and perform back up."
+    mv ~/.tmux.conf ~/.tmux.conf.bak
 fi
 
 cp -af .tmux.conf ~/.tmux.conf
@@ -145,9 +145,9 @@ echo "Copying configuration file to Home Directory..."
 files="hyper.js p10k.zsh zshrc"
 
 for file in ${files}; do
-    echo "Removing $file if exists"
+    echo "perform back up $file if exists"
     if test -f "~/.${file}"; then
-        rm -f ~/.${file}
+        mv ~/.${file} ~/.${file}.bak
     fi
     echo "Copying $file in home directory."
     cp -af ./config/${file} ~/.${file}
