@@ -1,0 +1,15 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "teamookla/speedtest"
+
+# set arguments for all 'brew cask install' commands
+cask_args appdir: "~/Applications"
+
+# Installing AppStore Utility and Xcode First
+brew "mas"
+mas "Xcode", id: 497799835

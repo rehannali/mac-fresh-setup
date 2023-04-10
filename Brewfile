@@ -1,18 +1,5 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-drivers"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/core"
-tap "homebrew/services"
-tap "teamookla/speedtest"
-
 # set arguments for all 'brew cask install' commands
 cask_args appdir: "~/Applications"
-
-# Installing AppStore Utility and Xcode First
-brew "mas"
-mas "Xcode", id: 497799835
 
 brew "openssl@1.1"
 brew "openssl@3"
@@ -62,7 +49,6 @@ brew "rclone"
 brew "rsync"
 brew "subversion"
 brew "swiftlint"
-brew "teleconsole"
 brew "telnet"
 brew "tmux"
 brew "whalebrew"
@@ -103,7 +89,7 @@ cask "micro-snitch"
 cask "microsoft-office"
 #cask "microsoft-teams"
 cask "macfuse"
-cask "osxfuse"
+#cask "osxfuse"
 cask "postman"
 cask "qlcolorcode"
 cask "qlimagesize"

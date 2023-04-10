@@ -3,12 +3,23 @@
 
 echo "Starting setup"
 
-# install xcode CLI
-sudo xcode-select —-install
+read -n 1 -p "Are you sure you want to install Xcode CLI if not already? <y/N> :" yn
+
+if [[ $yn = "y" ]] || [[ $yn = "Y" ]]; then
+	echo -e "\n\nInstalling Xcode CLI"
+	xcode-select --install
+fi
+
+read -n 1 -p "Are you wish to continue to proceed setup after xcode CLI installation <y/N> :" ans
+
+if [[ $ans != [yY] ]]; then
+	echo -e "\n\nExiting remaining installation"
+	exit 1
+fi
 
 # Add initial configuration for M1 MacBook's
 if [[ $(uname -m) == 'arm64' ]]; then
-    echo "Configuring Settings for M1 MacBook's"
+    echo -e "\n\nConfiguring Settings for M1 MacBook's"
     export PATH="/opt/homebrew/bin:$PATH"
     cd config
     awk '/usr\/local\/sbin/ { print; print "export PATH=\"\/opt\/homebrew\/bin:$PATH\""; next }1' zshrc > zshrc.new
@@ -19,16 +30,22 @@ fi
 
 # Check for Homebrew to be present, install if it's missing
 if test ! $(which brew); then
-    echo "Installing homebrew..."
+    echo -e "\n\nInstalling homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 # Update homebrew recipes
-echo "Updating brew using update && upgrade"
+echo -e "\n\nUpdating brew using update && upgrade"
 brew update && brew upgrade
 
+echo "Preconfigure Brew tap and initial config"
+brew bundle -v install --file ./PreBrewfile
+
+echo "Accept xcode license to continue"
+sudo xcodebuild -license accept
+
 echo "Executing Brewfile - CLI, CASK, APPSTORE"
-brew bundle -v install
+brew bundle -v install --file ./Brewfile
 
 echo "Appstore apps upgrade"
 mas upgrade
@@ -49,14 +66,16 @@ sdk i java 8.0.362-amzn
 sdk i java 11.0.18-amzn
 sdk i java 17.0.6-amzn
 sdk u java 17.0.6-amzn
-# Ruby
 
+# Ruby
+export PATH="$PATH:$HOME/.rvm/bin"
 rvm install ruby-2.7
 rvm install ruby
 rvm use 3.0
 
-sudo gem install cocoapods
-sudo gem install cocoapods-keys
+#sudo gem install cocoapods
+#sudo gem install cocoapods-keys
+
 # Node
 npm i -g localtunnel
 npm i -g firebase-tools
@@ -104,7 +123,7 @@ curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utili
 
 echo "Installing Oh My ZSH ...."
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 #echo "Installing PowerLevel10K"
 #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -154,3 +173,5 @@ for file in ${files}; do
 done
 
 echo "Macbook setup completed!"
+
+chsh -s $(which zsh)
