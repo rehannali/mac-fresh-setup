@@ -1,7 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Setup script for setting up a new macos machine
 
 echo "Starting setup"
+
+function cleanup {
+	echo "Exiting remaining setup. Found Trap to exit installation"
+	exit 1
+}
+
+trap cleanup EXIT HUP INT TERM
+
+USER=${USER:-$(id -u -n)}
 
 read -n 1 -p "Are you sure you want to install Xcode CLI if not already? <y/N> :" yn
 
@@ -57,9 +66,6 @@ echo "Installing SDK Manager"
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-echo "Installing RVM"
-curl -sSL https://get.rvm.io | bash -s stable
-
 echo "Installing Additional Software / Utilities and configuration..."
 # SDK Manager
 sdk i java 8.0.362-amzn
@@ -67,14 +73,17 @@ sdk i java 11.0.18-amzn
 sdk i java 17.0.6-amzn
 sdk u java 17.0.6-amzn
 
+echo "Installing RVM"
+curl -sSL https://get.rvm.io | bash -s stable
+
 # Ruby
 export PATH="$PATH:$HOME/.rvm/bin"
 rvm install ruby-2.7
 rvm install ruby
 rvm use 3.0
 
-#sudo gem install cocoapods
-#sudo gem install cocoapods-keys
+sudo gem install cocoapods
+sudo gem install cocoapods-keys
 
 # Node
 npm i -g localtunnel
@@ -121,9 +130,42 @@ rm -rf cpow-dotfiles
 echo "Configuring iterm2 aliases and shell integration"
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
+echo "Copying configuration file to Home Directory..."
+files="hyper.js p10k.zsh zshrc"
+
+for file in ${files}; do
+    echo "perform back up $file if exists"
+    if test -f "~/.${file}"; then
+        mv ~/.${file} ~/.${file}.bak
+    fi
+    echo "Copying $file in home directory."
+    cp -af ./config/${file} ~/.${file}
+done
+
+source ~/.zshrc
+
+# echo "Installing Flutter"
+git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
+export PATH="$HOME/.flutter/bin:$PATH"
+
+# echo "Configuring Flutter"
+flutter precache
+
+# echo "Flutter Channel"
+flutter channel
+
+# echo "Flutter Doctor"
+flutter doctor -v
+
 echo "Installing Oh My ZSH ...."
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+CHSH=no
+RUNZSH=no
+
+export CHSH
+export RUNZSH
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 #echo "Installing PowerLevel10K"
 #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -147,31 +189,18 @@ git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZS
 echo "Installing fast-syntax-highlighting"
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 
-# echo "Installing Flutter"
-git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
-export PATH="$HOME/.flutter/bin:$PATH"
-
-# echo "Configuring Flutter"
-flutter precache
-
-# echo "Flutter Channel"
-flutter channel
-
-# echo "Flutter Doctor"
-flutter doctor -v
-
-echo "Copying configuration file to Home Directory..."
-files="hyper.js p10k.zsh zshrc"
-
-for file in ${files}; do
-    echo "perform back up $file if exists"
-    if test -f "~/.${file}"; then
-        mv ~/.${file} ~/.${file}.bak
-    fi
-    echo "Copying $file in home directory."
-    cp -af ./config/${file} ~/.${file}
-done
-
 echo "Macbook setup completed!"
 
-chsh -s $(which zsh)
+ZSH=$(command -v zsh)
+
+echo "Changing your shell to $ZSH..."
+
+chsh -s "$ZSH" "$USER"
+
+# Check if the shell change was successful
+if [ $? -ne 0 ]; then
+  echo "chsh command unsuccessful. Change your default shell manually."
+else
+  export SHELL="$ZSH"
+  echo "Shell successfully changed to '$ZSH'"
+fi
