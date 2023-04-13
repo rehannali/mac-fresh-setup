@@ -78,6 +78,7 @@ curl -sSL https://get.rvm.io | bash -s stable
 
 # Ruby
 export PATH="$PATH:$HOME/.rvm/bin"
+source $HOME/.rvm/scripts/rvm
 rvm install ruby-2.7
 rvm install ruby
 rvm use 3.0
@@ -130,6 +131,53 @@ rm -rf cpow-dotfiles
 echo "Configuring iterm2 aliases and shell integration"
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
+echo "Installing Flutter"
+git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
+export PATH="$HOME/.flutter/bin:$PATH"
+
+echo "Configuring Flutter"
+flutter precache
+
+echo "Flutter Channel"
+flutter channel
+
+echo "Installing Oh My ZSH ...."
+
+if [[ -d "$HOME/.oh-my-zsh" ]]
+	echo "Removing old zsh directory before installation."
+	rm -rf "$HOME/.oh-my-zsh"
+fi
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+#echo "Installing PowerLevel10K"
+#git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# Check if the shell change was successful
+if [ $? -ne 0 ]; then
+  echo "Unable to install oh-my-zsh."
+else
+	echo "Installing Spaceship theme"
+	git clone https://github.com/spaceship-prompt/spaceship-prompt.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/spaceship-prompt" --depth=1
+	ln -s "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme" "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/spaceship.zsh-theme"
+
+	echo "Installing ZSH Syntax Highlighting"
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+	echo "Installing ZSH 256 Color Plougin"
+	git clone https://github.com/chrissicool/zsh-256color.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-256color
+
+	echo "Installing ZSH Auto Suggestiong plugin"
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+	echo "Installing ZSH Auto complete plugin"
+	git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
+
+	echo "Installing fast-syntax-highlighting"
+	git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+
+echo "Macbook setup completed!"
+
 echo "Copying configuration file to Home Directory..."
 files="hyper.js p10k.zsh zshrc"
 
@@ -144,54 +192,13 @@ done
 
 source ~/.zshrc
 
-# echo "Installing Flutter"
-git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
-export PATH="$HOME/.flutter/bin:$PATH"
-
-# echo "Configuring Flutter"
-flutter precache
-
-# echo "Flutter Channel"
-flutter channel
-
-# echo "Flutter Doctor"
+echo "Flutter Doctor"
 flutter doctor -v
 
-echo "Installing Oh My ZSH ...."
-
-CHSH=no
-RUNZSH=no
-
-export CHSH
-export RUNZSH
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-#echo "Installing PowerLevel10K"
-#git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-echo "Installing Spaceship theme"
-git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-
-echo "Installing ZSH Syntax Highlighting"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
-echo "Installing ZSH 256 Color Plougin"
-git clone https://github.com/chrissicool/zsh-256color.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-256color
-
-echo "Installing ZSH Auto Suggestiong plugin"
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-
-echo "Installing ZSH Auto complete plugin"
-git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
-
-echo "Installing fast-syntax-highlighting"
-git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-
-echo "Macbook setup completed!"
-
 ZSH=$(command -v zsh)
+
+echo "Entering shell entry to /etc/shells for $ZSH..."
+sudo echo "$ZSH" >> /etc/shells
 
 echo "Changing your shell to $ZSH..."
 
