@@ -197,8 +197,14 @@ flutter doctor -v
 
 ZSH=$(command -v zsh)
 
-echo "Entering shell entry to /etc/shells for $ZSH..."
-sudo echo "$ZSH" >> /etc/shells
+echo "Checking shell entry in /etc/shells for $ZSH..."
+
+ans=$(cat /etc/shells | grep -c $ZSH)
+
+if [[ $ans -ne 0 ]]; then
+	echo "Entering shell entry to /etc/shells for $ZSH..."
+	sudo echo "$ZSH" >> /etc/shells
+fi
 
 echo "Changing your shell to $ZSH..."
 
