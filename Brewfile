@@ -21,7 +21,7 @@ brew "git-flow"
 brew "git-lfs"
 brew "graphicsmagick"
 brew "htop"
-brew "libimobiledevice", args: ["HEAD"]
+brew "libimobiledevice"
 brew "ideviceinstaller"
 brew "libheif"
 brew "imagemagick"
