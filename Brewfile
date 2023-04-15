@@ -84,7 +84,7 @@ cask "hp-easy-start"
 cask "iterm2"
 cask "itsycal"
 cask "jetbrains-toolbox"
-cask "little-snitch"
+cask "little-snitch", args: { appdir: "/Applications" }
 cask "micro-snitch"
 cask "microsoft-office"
 #cask "microsoft-teams"
