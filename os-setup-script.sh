@@ -143,7 +143,7 @@ flutter channel
 
 echo "Installing Oh My ZSH ...."
 
-if [[ -d "$HOME/.oh-my-zsh" ]]
+if [[ -d "$HOME/.oh-my-zsh" ]]; then
 	echo "Removing old zsh directory before installation."
 	rm -rf "$HOME/.oh-my-zsh"
 fi
