@@ -175,6 +175,7 @@ else
 
 	echo "Installing fast-syntax-highlighting"
 	git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+fi
 
 echo "Macbook setup completed!"
 
