@@ -64,6 +64,13 @@ mas upgrade
 info "Brew Cleaning up..."
 brew cleanup && rm -rf $(brew --cache)
 
+info "Checking is sdkman exists"
+
+if [[ -d "$HOME/.sdkman" ]]; then
+	info "Removing SDK Manager directory"
+	rm -rf "$HOME/.sdkman"
+fi
+
 info "Installing SDK Manager"
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
@@ -74,6 +81,13 @@ sdk i java 8.0.362-amzn
 sdk i java 11.0.18-amzn
 sdk i java 17.0.6-amzn
 sdk u java 17.0.6-amzn
+
+info "Checking is rvm exists"
+
+if [[ -d "$HOME/.rvm" ]]; then
+	info "Removing rvm directory"
+	rm -rf "$HOME/.rvm"
+fi
 
 info "Installing RVM"
 curl -sSL https://get.rvm.io | bash -s stable
@@ -118,7 +132,7 @@ cp -af $SCRIPT_DIR/config/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh
 info "Configuring nvim"
 mkdir -p $HOME/.config/nvim
 
-git clone https://github.com/rehannali/cpow-dotfiles.git $SCRIPT_DIR/cpow-dotfiles
+git clone https://github.com/rehannali/cpow-dotfiles.git ${SCRIPT_DIR}/cpow-dotfiles
 
 cd $SCRIPT_DIR/cpow-dotfiles
 
@@ -202,10 +216,10 @@ for file in ${files}; do
     info "Checking is $file exists"
     if [[ -f "$HOME/.${file}" ]]; then
 			info "Found: $file -- Backing up $file..."
-      mv $HOME/.${file} $HOME/.${file}.bak
+      mv "$HOME/.${file}" "$HOME/.${file}.bak"
     fi
-    info "Copying $file to home directory from ./config directory."
-    cp -af $SCRIPT_DIR/config/${file} $HOME/.${file}
+    info "Copying $file to home directory from $SCRIPT_DIR/config directory."
+    cp -af "$SCRIPT_DIR/config/${file}" "$HOME/.${file}"
 done
 
 source $HOME/.zshrc
@@ -221,7 +235,7 @@ ans=$(cat /etc/shells | grep -c $ZSH)
 
 if [[ $ans -ne 0 ]]; then
 	info "Adding shell entry to /etc/shells for $ZSH..."
-	sudo echo "$ZSH" >> /etc/shells
+	echo "$ZSH" | sudo tee -a /etc/shells
 fi
 
 info "Changing your shell to $ZSH..."
@@ -241,6 +255,3 @@ info "Cleaning up..."
 if [[ -d "$HOME/~" ]]; then
 	rm -rf "$HOME/~"
 fi
-
-cd $HOME/Desktop
-rm -rf $SCRIPT_DIR
