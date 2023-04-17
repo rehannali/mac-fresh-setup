@@ -107,6 +107,7 @@ cask "simsim"
 # cask "skype"
 cask "snagit"
 cask "sourcetree"
+cask "surfshark", args: { appdir: "/Applications" }
 cask "suspicious-package"
 cask "ticktick"
 cask "termius"
