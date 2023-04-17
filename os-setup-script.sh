@@ -32,10 +32,10 @@ linebreak
 if [[ $(uname -m) == 'arm64' ]]; then
     info "Configuring Settings for M1 MacBook's"
     export PATH="/opt/homebrew/bin:$PATH"
-    cd config
+    cd $SCRIPT_DIR/config
     awk '/usr\/local\/sbin/ { print; print "export PATH=\"\/opt\/homebrew\/bin:$PATH\""; next }1' zshrc > zshrc.new
     rm -f zshrc && mv zshrc.new zshrc
-    cd ..
+    cd $SCRIPT_DIR
     sudo softwareupdate --install-rosetta --agree-to-license
 fi
 
@@ -50,13 +50,13 @@ info "Updating brew using update && upgrade"
 brew update && brew upgrade
 
 info "Preconfigure Brew tap and initial config"
-brew bundle -v install --file ./PreBrewfile
+brew bundle -v install --file $SCRIPT_DIR/PreBrewfile
 
 info "Accept xcode license to continue"
 sudo xcodebuild -license accept
 
 info "Executing Brewfile - CLI, CASK, APPSTORE"
-brew bundle -v install --file ./PostBrewfile
+brew bundle -v install --file $SCRIPT_DIR/PostBrewfile
 
 info "Appstore apps upgrade"
 mas upgrade
@@ -112,15 +112,15 @@ if [[ -f "$HOME/.config/spaceship/spaceship.zsh" ]]; then
 fi
 
 info "Copying spaceship file to config directory."
-cp -af ./config/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh
+cp -af $SCRIPT_DIR/config/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh
 
 # nvim config
 info "Configuring nvim"
 mkdir -p $HOME/.config/nvim
 
-git clone https://github.com/rehannali/cpow-dotfiles.git
+git clone https://github.com/rehannali/cpow-dotfiles.git $SCRIPT_DIR/cpow-dotfiles
 
-cd cpow-dotfiles
+cd $SCRIPT_DIR/cpow-dotfiles
 
 rsync -azhP init.lua $HOME/.config/nvim/
 rsync -azhP lua $HOME/.config/nvim/
@@ -133,9 +133,9 @@ fi
 
 cp -af .tmux.conf $HOME/.tmux.conf
 
-cd ..
+cd $SCRIPT_DIR
 info "Removing extra config repo folder"
-rm -rf cpow-dotfiles
+rm -rf $SCRIPT_DIR/cpow-dotfiles
 
 info "Configuring iterm2 aliases and shell integration"
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
@@ -205,7 +205,7 @@ for file in ${files}; do
       mv $HOME/.${file} $HOME/.${file}.bak
     fi
     info "Copying $file to home directory from ./config directory."
-    cp -af ./config/${file} $HOME/.${file}
+    cp -af $SCRIPT_DIR/config/${file} $HOME/.${file}
 done
 
 source $HOME/.zshrc
