@@ -3,26 +3,8 @@
 
 echo "Starting setup"
 
-function bail {
-	error "$*"
-	exit 99
-}
-
-function error {
-	print "\nERROR: $* \n" 1>&2
-}
-
-function info {
-	print "\nINFO: $* \n"
-}
-
-function cleanup {
-	bail "Exiting remaining setup. Found Trap to exit installation."
-}
-
-function linebreak {
-	print "\n\n"
-}
+SCRIPT_DIR=$(dirname "$0")
+source "${SCRIPT_DIR}/utils.sh"
 
 trap cleanup EXIT HUP INT TERM
 
@@ -31,8 +13,8 @@ HOME="${HOME:-$(eval echo ~$USER)}"
 
 read -n 1 -p "Are you sure you want to install Xcode CLI if not already? <y/N> :" yn
 
-if [[ $yn = [yY] ]]; then
-	info "\nInstalling Xcode CLI"
+if [[ $yn =~ [yY] ]]; then
+	info "Installing Xcode CLI"
 	xcode-select --install
 fi
 
@@ -40,15 +22,15 @@ linebreak
 
 read -n 1 -p "Are you wish to continue to proceed setup after xcode CLI installation <y/N> :" ans
 
-if [[ $ans != [yY] ]]; then
-	bail "\n\nExiting remaining installation"
+if [[ ! $ans =~ [yY] ]]; then
+	bail "Exiting remaining installation"
 fi
 
 linebreak
 
 # Add initial configuration for M1 MacBook's
 if [[ $(uname -m) == 'arm64' ]]; then
-    info "\n\nConfiguring Settings for M1 MacBook's"
+    info "Configuring Settings for M1 MacBook's"
     export PATH="/opt/homebrew/bin:$PATH"
     cd config
     awk '/usr\/local\/sbin/ { print; print "export PATH=\"\/opt\/homebrew\/bin:$PATH\""; next }1' zshrc > zshrc.new
@@ -59,12 +41,12 @@ fi
 
 # Check for Homebrew to be present, install if it's missing
 if ! command -v brew &> /dev/null; then
-    info "\n\nInstalling homebrew..."
+    info "Installing homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 # Update homebrew recipes
-info "\n\nUpdating brew using update && upgrade"
+info "Updating brew using update && upgrade"
 brew update && brew upgrade
 
 info "Preconfigure Brew tap and initial config"
@@ -74,7 +56,7 @@ info "Accept xcode license to continue"
 sudo xcodebuild -license accept
 
 info "Executing Brewfile - CLI, CASK, APPSTORE"
-brew bundle -v install --file ./Brewfile
+brew bundle -v install --file ./PostBrewfile
 
 info "Appstore apps upgrade"
 mas upgrade
@@ -103,7 +85,7 @@ rvm install ruby-2.7
 rvm install ruby
 rvm use 3.0
 
-info "Installing Cocoapods"
+info "Installing Cocoapods and keys"
 
 sudo gem install cocoapods
 sudo gem install cocoapods-keys
@@ -120,7 +102,7 @@ info "Installing python2 for some cases using pyenv"
 pyenv install pypy2.7-7.3.6
 
 # Spaceship config
-info "Configuring spaceship config"
+info "Configuring spaceship theme"
 mkdir -p $HOME/.config/spaceship
 
 info "Checking if spaceship file is available"
@@ -129,6 +111,7 @@ if [[ -f "$HOME/.config/spaceship/spaceship.zsh" ]]; then
     mv $HOME/.config/spaceship/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh.bak
 fi
 
+info "Copying spaceship file to config directory."
 cp -af ./config/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh
 
 # nvim config
@@ -221,7 +204,7 @@ for file in ${files}; do
 			info "Found: $file -- Backing up $file..."
       mv $HOME/.${file} $HOME/.${file}.bak
     fi
-    info "Copying $file in home directory from ./config directory."
+    info "Copying $file to home directory from ./config directory."
     cp -af ./config/${file} $HOME/.${file}
 done
 
@@ -252,3 +235,12 @@ else
   export SHELL="$ZSH"
   info "Shell successfully changed to '$ZSH'"
 fi
+
+info "Cleaning up..."
+
+if [[ -d "$HOME/~" ]]; then
+	rm -rf "$HOME/~"
+fi
+
+cd $HOME/Desktop
+rm -rf $SCRIPT_DIR
