@@ -3,32 +3,52 @@
 
 echo "Starting setup"
 
+function bail {
+	error "$*"
+	exit 99
+}
+
+function error {
+	print "\nERROR: $* \n" 1>&2
+}
+
+function info {
+	print "\nINFO: $* \n"
+}
+
 function cleanup {
-	echo "Exiting remaining setup. Found Trap to exit installation"
-	exit 1
+	bail "Exiting remaining setup. Found Trap to exit installation."
+}
+
+function linebreak {
+	print "\n\n"
 }
 
 trap cleanup EXIT HUP INT TERM
 
 USER=${USER:-$(id -u -n)}
+HOME="${HOME:-$(eval echo ~$USER)}"
 
 read -n 1 -p "Are you sure you want to install Xcode CLI if not already? <y/N> :" yn
 
-if [[ $yn = "y" ]] || [[ $yn = "Y" ]]; then
-	echo -e "\n\nInstalling Xcode CLI"
+if [[ $yn = [yY] ]]; then
+	info "\nInstalling Xcode CLI"
 	xcode-select --install
 fi
+
+linebreak
 
 read -n 1 -p "Are you wish to continue to proceed setup after xcode CLI installation <y/N> :" ans
 
 if [[ $ans != [yY] ]]; then
-	echo -e "\n\nExiting remaining installation"
-	exit 1
+	bail "\n\nExiting remaining installation"
 fi
+
+linebreak
 
 # Add initial configuration for M1 MacBook's
 if [[ $(uname -m) == 'arm64' ]]; then
-    echo -e "\n\nConfiguring Settings for M1 MacBook's"
+    info "\n\nConfiguring Settings for M1 MacBook's"
     export PATH="/opt/homebrew/bin:$PATH"
     cd config
     awk '/usr\/local\/sbin/ { print; print "export PATH=\"\/opt\/homebrew\/bin:$PATH\""; next }1' zshrc > zshrc.new
@@ -38,42 +58,42 @@ if [[ $(uname -m) == 'arm64' ]]; then
 fi
 
 # Check for Homebrew to be present, install if it's missing
-if test ! $(which brew); then
-    echo -e "\n\nInstalling homebrew..."
+if ! command -v brew &> /dev/null; then
+    info "\n\nInstalling homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 # Update homebrew recipes
-echo -e "\n\nUpdating brew using update && upgrade"
+info "\n\nUpdating brew using update && upgrade"
 brew update && brew upgrade
 
-echo "Preconfigure Brew tap and initial config"
+info "Preconfigure Brew tap and initial config"
 brew bundle -v install --file ./PreBrewfile
 
-echo "Accept xcode license to continue"
+info "Accept xcode license to continue"
 sudo xcodebuild -license accept
 
-echo "Executing Brewfile - CLI, CASK, APPSTORE"
+info "Executing Brewfile - CLI, CASK, APPSTORE"
 brew bundle -v install --file ./Brewfile
 
-echo "Appstore apps upgrade"
+info "Appstore apps upgrade"
 mas upgrade
 
-echo "Cleaning up..."
+info "Brew Cleaning up..."
 brew cleanup && rm -rf $(brew --cache)
 
-echo "Installing SDK Manager"
+info "Installing SDK Manager"
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-echo "Installing Additional Software / Utilities and configuration..."
+info "Installing Additional Software / Utilities and configuration..."
 # SDK Manager
 sdk i java 8.0.362-amzn
 sdk i java 11.0.18-amzn
 sdk i java 17.0.6-amzn
 sdk u java 17.0.6-amzn
 
-echo "Installing RVM"
+info "Installing RVM"
 curl -sSL https://get.rvm.io | bash -s stable
 
 # Ruby
@@ -83,68 +103,81 @@ rvm install ruby-2.7
 rvm install ruby
 rvm use 3.0
 
+info "Installing Cocoapods"
+
 sudo gem install cocoapods
 sudo gem install cocoapods-keys
+
+info "Installing NPM modules"
 
 # Node
 npm i -g localtunnel
 npm i -g firebase-tools
 
+info "Installing python2 for some cases using pyenv"
+
 # Instatalling python2 with pyenv
 pyenv install pypy2.7-7.3.6
 
 # Spaceship config
-echo "Configuring spaceship config"
-mkdir -p ~/.config/spaceship
+info "Configuring spaceship config"
+mkdir -p $HOME/.config/spaceship
 
-echo "Checking if spaceship file is available"
-if test -f "~/.config/spaceship/spaceship.zsh"; then
-    echo "spaceship file is available and perform back up."
-    mv ~/.config/spaceship/spaceship.zsh ~/.config/spaceship/spaceship.zsh.bak
+info "Checking if spaceship file is available"
+if [[ -f "$HOME/.config/spaceship/spaceship.zsh" ]]; then
+    info "spaceship file is available and perform back up."
+    mv $HOME/.config/spaceship/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh.bak
 fi
 
-cp -af ./config/spaceship.zsh ~/.config/spaceship/spaceship.zsh
+cp -af ./config/spaceship.zsh $HOME/.config/spaceship/spaceship.zsh
 
 # nvim config
-echo "Configuring nvim"
-mkdir -p ~/.config/nvim
+info "Configuring nvim"
+mkdir -p $HOME/.config/nvim
 
 git clone https://github.com/rehannali/cpow-dotfiles.git
 
 cd cpow-dotfiles
 
-rsync -azhP init.lua ~/.config/nvim/
-rsync -azhP lua ~/.config/nvim/
+rsync -azhP init.lua $HOME/.config/nvim/
+rsync -azhP lua $HOME/.config/nvim/
 
-echo "Checking if tmux is available in home directory"
-if test -f "~/.tmux.conf"; then
-    echo "Found tmux file in home directory and perform back up."
-    mv ~/.tmux.conf ~/.tmux.conf.bak
+info "Checking if tmux is available in home directory"
+if [[ -f "$HOME/.tmux.conf" ]]; then
+    info "Found tmux file in home directory and perform back up."
+    mv $HOME/.tmux.conf $HOME/.tmux.conf.bak
 fi
 
-cp -af .tmux.conf ~/.tmux.conf
+cp -af .tmux.conf $HOME/.tmux.conf
 
 cd ..
-echo "Removing extra config repo folder"
+info "Removing extra config repo folder"
 rm -rf cpow-dotfiles
 
-echo "Configuring iterm2 aliases and shell integration"
+info "Configuring iterm2 aliases and shell integration"
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
-echo "Installing Flutter"
-git clone https://github.com/flutter/flutter.git ~/.flutter -b beta
+info "Installing Flutter"
+
+info "Checking if flutter directory available"
+if [[ -d "$HOME/.flutter" ]]; then
+	info "Removing flutter directory"
+	rm -rf $HOME/.flutter
+fi
+
+git clone https://github.com/flutter/flutter.git $HOME/.flutter -b beta
 export PATH="$HOME/.flutter/bin:$PATH"
 
-echo "Configuring Flutter"
+info "Configuring Flutter"
 flutter precache
 
-echo "Flutter Channel"
+info "Flutter Channel"
 flutter channel
 
-echo "Installing Oh My ZSH ...."
+info "Installing Oh My ZSH ...."
 
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
-	echo "Removing old zsh directory before installation."
+	info "Removing old zsh directory before installation."
 	rm -rf "$HOME/.oh-my-zsh"
 fi
 
@@ -154,67 +187,68 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Check if the shell change was successful
-if [ $? -ne 0 ]; then
-  echo "Unable to install oh-my-zsh."
+if [[ $? -ne 0 ]]; then
+  error "Unable to install oh-my-zsh."
 else
-	echo "Installing Spaceship theme"
+	info "Installing Spaceship theme"
 	git clone https://github.com/spaceship-prompt/spaceship-prompt.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/spaceship-prompt" --depth=1
 	ln -s "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme" "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/spaceship.zsh-theme"
 
-	echo "Installing ZSH Syntax Highlighting"
+	info "Installing ZSH Syntax Highlighting"
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-	echo "Installing ZSH 256 Color Plougin"
+	info "Installing ZSH 256 Color Plougin"
 	git clone https://github.com/chrissicool/zsh-256color.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-256color
 
-	echo "Installing ZSH Auto Suggestiong plugin"
+	info "Installing ZSH Auto Suggestiong plugin"
 	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-	echo "Installing ZSH Auto complete plugin"
+	info "Installing ZSH Auto complete plugin"
 	git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
 
-	echo "Installing fast-syntax-highlighting"
+	info "Installing fast-syntax-highlighting"
 	git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 fi
 
-echo "Macbook setup completed!"
+info "Macbook setup completed!"
 
-echo "Copying configuration file to Home Directory..."
+info "Copying configuration file to Home Directory..."
 files="hyper.js p10k.zsh zshrc"
 
 for file in ${files}; do
-    echo "perform back up $file if exists"
-    if test -f "~/.${file}"; then
-        mv ~/.${file} ~/.${file}.bak
+    info "Checking is $file exists"
+    if [[ -f "$HOME/.${file}" ]]; then
+			info "Found: $file -- Backing up $file..."
+      mv $HOME/.${file} $HOME/.${file}.bak
     fi
-    echo "Copying $file in home directory."
-    cp -af ./config/${file} ~/.${file}
+    info "Copying $file in home directory from ./config directory."
+    cp -af ./config/${file} $HOME/.${file}
 done
 
-source ~/.zshrc
+source $HOME/.zshrc
 
-echo "Flutter Doctor"
+info "Flutter Doctor"
 flutter doctor -v
 
 ZSH=$(command -v zsh)
 
-echo "Checking shell entry in /etc/shells for $ZSH..."
+info "Checking shell entry in /etc/shells for $ZSH..."
 
 ans=$(cat /etc/shells | grep -c $ZSH)
 
 if [[ $ans -ne 0 ]]; then
-	echo "Entering shell entry to /etc/shells for $ZSH..."
+	info "Adding shell entry to /etc/shells for $ZSH..."
 	sudo echo "$ZSH" >> /etc/shells
 fi
 
-echo "Changing your shell to $ZSH..."
+info "Changing your shell to $ZSH..."
 
 chsh -s "$ZSH" "$USER"
 
 # Check if the shell change was successful
-if [ $? -ne 0 ]; then
-  echo "chsh command unsuccessful. Change your default shell manually."
+if [[ $? -ne 0 ]]; then
+  error "chsh command unsuccessful. Change your default shell manually."
 else
   export SHELL="$ZSH"
-  echo "Shell successfully changed to '$ZSH'"
+  info "Shell successfully changed to '$ZSH'"
 fi
