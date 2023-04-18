@@ -59,6 +59,7 @@ brew "teamookla/speedtest/speedtest"
 
 # Installing casks
 
+cask "adobe-creative-cloud"
 cask "alfred"
 # cask "anaconda"
 cask "android-file-transfer"
