@@ -52,6 +52,7 @@ brew "swiftlint"
 brew "telnet"
 brew "tmux"
 brew "whalebrew"
+brew "xcodes"
 brew "youtube-dl"
 brew "zlib"
 brew "zsh"
@@ -64,6 +65,7 @@ cask "alfred"
 # cask "anaconda"
 cask "android-file-transfer"
 cask "android-platform-tools"
+cask "copilot-for-xcode"
 #cask "clickup"
 cask "docker"
 cask "easyfind"
@@ -108,14 +110,15 @@ cask "simsim"
 # cask "skype"
 cask "snagit"
 cask "sourcetree"
-cask "surfshark", args: { appdir: "/Applications" }
+#cask "surfshark", args: { appdir: "/Applications" }
 cask "suspicious-package"
-cask "ticktick"
+#cask "ticktick"
 cask "termius"
-cask "virtualbox"
+#cask "virtualbox"
 cask "visual-studio-code"
 cask "vlc"
 cask "webpquicklook"
+cask "xcodes"
 # cask "zoom"
 
 # App store installation
@@ -131,7 +134,7 @@ mas "NextDNS", id: 1464122853
 #mas "Pages", id: 409201541
 #mas "Paste JSON as Code • quicktype", id: 1330801220
 #mas "Realm Browser", id: 1007457278
-mas "Spark", id: 1176895641
+#mas "Spark", id: 1176895641
 mas "Swiftify for Xcode", id: 1183412116
 mas "Speedify", id: 999025824
 mas "Text Toolset", id: 1157225201
