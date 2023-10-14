@@ -65,6 +65,7 @@ cask "alfred"
 # cask "anaconda"
 cask "android-file-transfer"
 cask "android-platform-tools"
+cask "bitwarden"
 cask "copilot-for-xcode"
 #cask "clickup"
 cask "discord"
@@ -120,13 +121,15 @@ cask "termius"
 cask "visual-studio-code"
 cask "vmware-fusion"
 cask "vlc"
+cadk "whatsapp-beta"
 cask "webpquicklook"
 cask "xcodes"
 # cask "zoom"
 
 # App store installation
 mas "Amphetamine", id: 937984704
-mas "Bitwarden", id: 1352778147
+# Remove in favor of homebrew
+#mas "Bitwarden", id: 1352778147
 mas "Encrypto", id: 935235287
 #mas "iMovie", id: 408981434
 #mas "Keynote", id: 409183694
