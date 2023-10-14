@@ -77,10 +77,10 @@ source "${HOME}/.sdkman/bin/sdkman-init.sh"
 
 info "Installing Additional Software / Utilities and configuration..."
 # SDK Manager
-sdk i java 8.0.362-amzn
-sdk i java 11.0.18-amzn
-sdk i java 17.0.6-amzn
-sdk u java 17.0.6-amzn
+sdk i java 8.0.382-amzn
+sdk i java 11.0.20-amzn
+sdk i java 17.0.8-amzn
+sdk u java 17.0.8-amzn
 
 info "Checking is rvm exists"
 
