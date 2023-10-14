@@ -82,27 +82,30 @@ sdk i java 11.0.20-amzn
 sdk i java 17.0.8-amzn
 sdk u java 17.0.8-amzn
 
-info "Checking is rvm exists"
+#info "Checking is rvm exists"
 
-if [[ -d "${HOME}/.rvm" ]]; then
-	info "Removing rvm directory"
-	rm -rf "${HOME}/.rvm"
-fi
+#if [[ -d "${HOME}/.rvm" ]]; then
+#	info "Removing rvm directory"
+#	rm -rf "${HOME}/.rvm"
+#fi
 
-info "Installing RVM"
-curl -sSL https://get.rvm.io | bash -s stable
+#info "Installing RVM"
+#curl -sSL https://get.rvm.io | bash -s stable
 
 # Ruby
-export PATH="$PATH:${HOME}/.rvm/bin"
-source ${HOME}/.rvm/scripts/rvm
-rvm install ruby-2.7
-rvm install ruby
-rvm use 3
+#export PATH="$PATH:${HOME}/.rvm/bin"
+#source ${HOME}/.rvm/scripts/rvm
+#rvm install ruby-2.7
+#rvm install ruby
+#rvm use 3
+
+info "Add new ruby to system path"
+export PATH="/usr/local/opt/ruby/bin:$PATH"
 
 info "Installing Cocoapods and keys"
 
-sudo gem install cocoapods
-sudo gem install cocoapods-keys
+gem install cocoapods cocoapods-keys
+sudo gem install cocoapods cocoapods-keys
 
 info "Installing NPM modules"
 
