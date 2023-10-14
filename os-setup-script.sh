@@ -3,7 +3,9 @@
 
 echo "Starting setup"
 
-SCRIPT_DIR=$(dirname "$0")
+# SCRIPT_DIR=$(dirname "$0")
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+DOTFILE_PATH=${SCRIPT_DIR}/dot-config
 source "${SCRIPT_DIR}/utils.sh"
 
 trap cleanup EXIT HUP INT TERM
@@ -64,7 +66,7 @@ mas upgrade
 info "Brew Cleaning up..."
 brew cleanup && rm -rf $(brew --cache)
 
-info "Checking is sdkman exists"
+info "Checking if sdkman exists"
 
 if [[ -d "${HOME}/.sdkman" ]]; then
 	info "Removing SDK Manager directory"
@@ -102,6 +104,9 @@ sdk u java 17.0.8-amzn
 info "Add new ruby to system path"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 
+info "Checking ruby version if it is changed or not"
+ruby --version
+
 info "Installing Cocoapods and keys"
 
 gem install cocoapods cocoapods-keys
@@ -135,9 +140,13 @@ cp -af ${SCRIPT_DIR}/config/spaceship.zsh ${HOME}/.config/spaceship/spaceship.zs
 info "Configuring nvim"
 mkdir -p ${HOME}/.config/nvim
 
-git clone https://github.com/rehannali/cpow-dotfiles.git ${SCRIPT_DIR}/cpow-dotfiles
+mkdir -p ${DOTFILE_PATH}
 
-cd ${SCRIPT_DIR}/cpow-dotfiles
+cd ${DOTFILE_PATH}
+
+git clone https://github.com/rehannali/cpow-dotfiles.git ${DOTFILE_PATH}/dotfiles
+
+cd ${DOTFILE_PATH}/dotfiles
 
 rsync -azhP init.lua ${HOME}/.config/nvim/
 rsync -azhP lua ${HOME}/.config/nvim/
@@ -152,7 +161,7 @@ cp -af .tmux.conf ${HOME}/.tmux.conf
 
 cd ${SCRIPT_DIR}
 info "Removing extra config repo folder"
-rm -rf ${SCRIPT_DIR}/cpow-dotfiles
+rm -rf ${DOTFILE_PATH}
 
 info "Configuring iterm2 aliases and shell integration"
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
@@ -213,15 +222,15 @@ fi
 info "Macbook setup completed!"
 
 info "Copying configuration file to Home Directory..."
-files="hyper.js p10k.zsh zshrc"
+config_files="hyper.js p10k.zsh zshrc"
 
-for file in ${files}; do
-    info "Checking is $file exists"
+for file in ${config_files}; do
+    info "Checking is ${file} exists"
     if [[ -f "${HOME}/.${file}" ]]; then
-			info "Found: $file -- Backing up $file..."
+			info "Found: ${file} -- Backing up ${file}..."
       mv "${HOME}/.${file}" "${HOME}/.${file}.bak"
     fi
-    info "Copying $file to home directory from ${SCRIPT_DIR}/config directory."
+    info "Copying ${file} to home directory from ${SCRIPT_DIR}/config directory."
     cp -af "${SCRIPT_DIR}/config/${file}" "${HOME}/.${file}"
 done
 
