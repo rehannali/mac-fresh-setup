@@ -1,0 +1,17 @@
+# App store installation
+mas "Amphetamine", id: 937984704
+mas "Bitwarden", id: 1352778147
+mas "Encrypto", id: 935235287
+#mas "iMovie", id: 408981434
+#mas "Keynote", id: 409183694
+mas "Mactracker", id: 430255202
+#mas "NordVPN", id: 905953485
+#mas "NextDNS", id: 1464122853
+#mas "Numbers", id: 409203825
+#mas "Pages", id: 409201541
+#mas "Paste JSON as Code • quicktype", id: 1330801220
+#mas "Realm Browser", id: 1007457278
+mas "Spark", id: 1176895641
+mas "Swiftify for Xcode", id: 1183412116
+#mas "Speedify", id: 999025824
+mas "Text Toolset", id: 1157225201

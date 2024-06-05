@@ -1,5 +1,5 @@
 tap "homebrew/bundle"
-# Cask and core not required now. 
+# Cask and core not required now.
 #tap "homebrew/cask"
 #tap "homebrew/core"
 #tap "homebrew/cask-drivers"

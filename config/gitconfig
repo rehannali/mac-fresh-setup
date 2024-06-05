@@ -1,0 +1,49 @@
+[user]
+	name = {{Name}}
+    email = {{Email}}
+    signingKey = {{Key}}
+[core]
+    excludesfile = $HOME/.gitignore_global
+[difftool "sourcetree"]
+    cmd = /opt/homebrew/bin/code -d -w \"$LOCAL\" \"$REMOTE\"
+    path = 
+[mergetool "sourcetree"]
+    cmd = /opt/homebrew/bin/code -n -w \"$MERGED\"
+    trustExitCode = true
+[commit]
+    template = $HOME/.stCommitMsg
+    gpgSign = true
+[init]
+    defaultBranch = master
+[gpg]
+    program = /opt/homebrew/bin/gpg
+    format = openpgp
+[alias]
+    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[tag]
+    forceSignAnnotated = true
+[gpg "ssh"]
+    program = ssh-keygen
+    allowedSignersFile = ""
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    side-by-side = true
+    line-numbers = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
