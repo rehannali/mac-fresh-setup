@@ -1,26 +1,9 @@
+[[ -f "$HOME/.zsh/omz.zsh" ]] && source "$HOME/.zsh/omz.zsh"
 [[ -f "$HOME/.zsh/aliases.zsh" ]] && source "$HOME/.zsh/aliases.zsh"
 [[ -f "$HOME/.zsh/functions.zsh" ]] && source "$HOME/.zsh/functions.zsh"
 [[ -f "$HOME/.zsh/starship.zsh" ]] && source "$HOME/.zsh/starship.zsh"
 [[ -f "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-ZSH_THEME="spaceship"
-ZSH_DISABLE_COMPFIX="true"
-DISABLE_UPDATE_PROMPT="true"
-DISABLE_MAGIC_FUNCTIONS=true
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
-
-plugins=(
-  poetry
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-256color
-  fast-syntax-highlighting
-  zsh-autocomplete
-)
-
-source $ZSH/oh-my-zsh.sh
 
 eval "$(pyenv init -)"
 eval "$(rbenv init -)"
