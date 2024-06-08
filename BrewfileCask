@@ -1,65 +1,6 @@
 # set arguments for all 'brew cask install' commands
 cask_args appdir: "~/Applications"
 
-brew "openssl@1.1"
-brew "openssl@3"
-brew "autoconf"
-brew "automake"
-brew "bat"
-brew "bitwarden-cli"
-#brew "bpytop"
-brew "glib"
-brew "carthage"
-brew "coreutils"
-brew "eza"
-brew "fastlane"
-brew "harfbuzz"
-brew "ffmpeg"
-brew "gh"
-brew "gcc"
-brew "git"
-brew "git-flow"
-brew "git-lfs"
-brew "graphicsmagick"
-brew "htop"
-brew "libimobiledevice"
-brew "ideviceinstaller"
-brew "libheif"
-brew "imagemagick"
-brew "ios-deploy"
-# brew "jmeter"
-# brew "jupyterlab"
-brew "libksba"
-brew "mkcert"
-# brew "macvim"
-# brew "mysql"
-brew "nginx", restart_service: true
-brew "neovim"
-brew "opencv@3"
-#brew "openvpn"
-#brew "openconnect"
-brew "php"
-brew "pkg-config"
-brew "pyenv"
-brew "python@3.9"
-brew "python@3.10"
-brew "python@3.11"
-brew "rbenv"
-brew "ruby-build"
-brew "ruby"
-brew "rclone"
-brew "rsync"
-brew "subversion"
-brew "swiftlint"
-brew "telnet"
-brew "tmux"
-brew "whalebrew"
-brew "xcodes"
-brew "youtube-dl"
-brew "zlib"
-brew "zsh"
-brew "teamookla/speedtest/speedtest"
-
 # Installing casks
 
 cask "adobe-creative-cloud"
@@ -84,11 +25,15 @@ cask "font-jetbrains-mono-nerd-font"
 cask "colindean/fonts-nonfree/font-microsoft-office"
 cask "font-meslo-lg-nerd-font"
 cask "font-sauce-code-pro-nerd-font"
+cask "font-hack-nerd-font"
 #cask "forticlient-vpn"
 # cask "gotomeeting"
+cask "gitkraken"
 cask "google-chrome"
 # cask "hyper"
 cask "hp-easy-start"
+cask "iina"
+cask "iina-plus"
 cask "iterm2"
 cask "itsycal"
 cask "jetbrains-toolbox"
@@ -129,22 +74,3 @@ cask "whatsapp-beta"
 cask "webpquicklook"
 cask "xcodes"
 # cask "zoom"
-
-# App store installation
-mas "Amphetamine", id: 937984704
-# Remove in favor of homebrew
-#mas "Bitwarden", id: 1352778147
-mas "Encrypto", id: 935235287
-#mas "iMovie", id: 408981434
-#mas "Keynote", id: 409183694
-mas "Mactracker", id: 430255202
-#mas "NordVPN", id: 905953485
-mas "NextDNS", id: 1464122853
-#mas "Numbers", id: 409203825
-#mas "Pages", id: 409201541
-#mas "Paste JSON as Code • quicktype", id: 1330801220
-#mas "Realm Browser", id: 1007457278
-#mas "Spark", id: 1176895641
-mas "Swiftify for Xcode", id: 1183412116
-mas "Speedify", id: 999025824
-mas "Text Toolset", id: 1157225201

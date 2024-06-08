@@ -1,0 +1,7 @@
+alias vi="nvim"
+alias zshconfig="nvim ~/.zshrc"
+alias zshenvconfig="nvim ~/.zshenv"
+# alias vimconfig="nvim ~/.vimrc"
+alias szsh="source ~/.zshrc"
+alias ls="eza --icons=always --group-directories-first --color=always --git --long --no-filesize --no-time --no-user --no-permissions"
+alias ll="eza --icons=always --group-directories-first --color=always --git --long -l"
