@@ -2,10 +2,13 @@
 [[ -f "$HOME/.zsh/aliases.zsh" ]] && source "$HOME/.zsh/aliases.zsh"
 [[ -f "$HOME/.zsh/functions.zsh" ]] && source "$HOME/.zsh/functions.zsh"
 [[ -f "$HOME/.zsh/starship.zsh" ]] && source "$HOME/.zsh/starship.zsh"
+[[ -f "$HOME/.zsh/history.zsh" ]] && source "$HOME/.zsh/history.zsh"
 [[ -f "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 eval "$(pyenv init -)"
 eval "$(rbenv init -)"
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
 #eval "$(starship init zsh)"

@@ -88,7 +88,18 @@ function place_configuration_files {
     run rsync -azhP ${SCRIPT_DIR}/config/.zsh ${HOME}/
     run rsync -azhP ${SCRIPT_DIR}/config/neofetch ${HOME}/.config/
 
+    alacritty_setup
+
     source ${HOME}/.zshrc
 
     flutter_doctor
+}
+
+function alacritty_setup {
+    info "Configuring Alacritty ..."
+    run mkdir -p ${HOME}/.config/alacritty/themes
+    run cp -af ${SCRIPT_DIR}/config/alacritty/alacritty.toml ${HOME}/.config/alacritty/alacritty.toml
+
+    run git clone https://github.com/alacritty/alacritty-theme ${HOME}/.config/alacritty/themes
+
 }
