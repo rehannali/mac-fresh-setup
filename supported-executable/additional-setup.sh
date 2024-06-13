@@ -85,7 +85,7 @@ function place_configuration_files {
 
     run mkdir -p ${HOME}/.config
 
-    run rsync -azhP ${SCRIPT_DIR}/config/.zsh ${HOME}/.config/
+    run rsync -azhP ${SCRIPT_DIR}/config/.zsh ${HOME}/
     run rsync -azhP ${SCRIPT_DIR}/config/neofetch ${HOME}/.config/
 
     source ${HOME}/.zshrc
