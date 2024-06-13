@@ -39,6 +39,7 @@ function configure_dotfiles {
     fi
 
     run cp -af .tmux.conf ${HOME}/.tmux.conf
+    run git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 
     cd ${SCRIPT_DIR}
     info "Removing extra config repo folder"

@@ -6,10 +6,21 @@ import = [
 TERM = "xterm-256color"
 
 [window]
+dimensions.columns = 200
+dimensions.lines = 60
+
 padding.x = 10
 padding.y = 10
 
+position.x = 350
+position.y = 350
+
 decorations = "Buttonless"
+
+opacity = 0.85
+blur = true
+
+option_as_alt = "Both"
 
 [scrolling]
 history = 0
@@ -21,4 +32,4 @@ style.blinking = "Never"
 [font]
 normal.family = "Hack Nerd Font Mono"
 
-size = 24
+size = 14
