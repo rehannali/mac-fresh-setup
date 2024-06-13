@@ -11,5 +11,6 @@ eval "$(rbenv init -)"
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
+eval "$(atuin init bash)"
 #eval "$(starship init zsh)"
 
