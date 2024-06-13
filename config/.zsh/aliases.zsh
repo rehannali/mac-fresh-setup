@@ -1,4 +1,5 @@
 alias vi="nvim"
+alias cd="z"
 alias zshconfig="nvim ~/.zshrc"
 alias zshenvconfig="nvim ~/.zshenv"
 alias vimconfig="nvim ~/.vimrc"
