@@ -12,8 +12,8 @@ dimensions.lines = 50
 padding.x = 10
 padding.y = 10
 
-position.x = 350
-position.y = 350
+position.x = 250
+position.y = 200
 
 decorations = "Buttonless"
 
