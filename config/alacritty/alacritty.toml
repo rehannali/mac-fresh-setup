@@ -23,7 +23,8 @@ blur = true
 option_as_alt = "Both"
 
 [scrolling]
-history = 0
+history = 100000
+multiplier = 10
 
 [cursor]
 style.shape = "Beam"
