@@ -1,0 +1,48 @@
+---
+- name: Configure Hosts
+  hosts: all
+  gather_facts: true
+
+  pre_tasks:
+    - name: Ensure correct Python interpreter is used
+      ansible.builtin.command: uname -m
+      register: architecture
+      changed_when: false
+
+    - name: Install Python 3
+      ansible.builtin.debug:
+        msg: "Architecture: {{ architecture.stdout }}"
+
+    - name: Set Python interpreter for M1 (ARM64)
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: /opt/homebrew/bin/python3
+      when:
+        - "'arm64' in architecture.stdout"
+        - ansible_python_interpreter is not defined
+      changed_when: false
+
+    - name: Set Python interpreter for Intel based (x86_64)
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: /usr/local/bin/python3
+      when:
+        - "'x86_64' in architecture.stdout"
+        - ansible_python_interpreter is not defined
+      changed_when: false
+
+    - name: Debug Python interpreter
+      ansible.builtin.debug:
+        msg: "Python interpreter: {{ ansible_python_interpreter }}"
+
+  tasks:
+    - name: System details
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop:
+        - "{{ ansible_distribution }}"
+        - "{{ ansible_distribution_version }}"
+        - "{{ ansible_distribution_major_version }}"
+
+    # - name: Homebrew tap
+    #   community.general.homebrew_tap:
+    #     name: homebrew/cask
+    #     state: present
