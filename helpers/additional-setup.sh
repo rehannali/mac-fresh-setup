@@ -28,8 +28,8 @@ function configure_dotfiles {
 
     run cd ${SCRIPT_DIR}/cpow-dotfiles
 
-    run rsync -azhP init.lua ${HOME}/.config/nvim/
-    run rsync -azhP lua ${HOME}/.config/nvim/
+    # run rsync -azhP init.lua ${HOME}/.config/nvim/
+    # run rsync -azhP lua ${HOME}/.config/nvim/
 
     info "Checking if tmux is available in home directory"
     timestamp=$(date +%Y%m%d)
@@ -44,6 +44,9 @@ function configure_dotfiles {
     cd ${SCRIPT_DIR}
     info "Removing extra config repo folder"
     run rm -rf ${SCRIPT_DIR}/cpow-dotfiles
+
+    run rsync -azhP ${SCRIPT_DIR}/config/nvim ${HOME}/.config/
+    run rsync -azhP ${SCRIPT_DIR}/config/wezterm ${HOME}/.config/
 }
 
 # Function to check if Zsh is in /etc/shells
