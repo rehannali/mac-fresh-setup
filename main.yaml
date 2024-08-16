@@ -4,29 +4,24 @@
   gather_facts: true
 
   pre_tasks:
-    - name: Ensure correct Python interpreter is used
-      ansible.builtin.command: uname -m
-      register: architecture
-      changed_when: false
-
-    - name: Install Python 3
-      ansible.builtin.debug:
-        msg: "Architecture: {{ architecture.stdout }}"
+    - name: Ansible Setup
+      ansible.builtin.include_tasks:
+        file: roles/base/tasks/ansible_setup.yaml
 
     - name: Set Python interpreter for M1 (ARM64)
       ansible.builtin.set_fact:
         ansible_python_interpreter: /opt/homebrew/bin/python3
       when:
-        - "'arm64' in architecture.stdout"
-        - ansible_python_interpreter is not defined
+        - ansible_architecture == "arm64"
+        - ansible_os_family == "Darwin"
       changed_when: false
 
     - name: Set Python interpreter for Intel based (x86_64)
       ansible.builtin.set_fact:
         ansible_python_interpreter: /usr/local/bin/python3
       when:
-        - "'x86_64' in architecture.stdout"
-        - ansible_python_interpreter is not defined
+        - ansible_architecture != "arm64"
+        - ansible_os_family == "Darwin"
       changed_when: false
 
     - name: Debug Python interpreter
@@ -39,8 +34,15 @@
         msg: "{{ item }}"
       loop:
         - "{{ ansible_distribution }}"
+        - "{{ ansible_os_family }}"
         - "{{ ansible_distribution_version }}"
         - "{{ ansible_distribution_major_version }}"
+        - "{{ ansible_user_dir }}"
+        - "{{ ansible_architecture }}"
+
+    # - name: Homebrew cleanup
+    #   ansible.builtin.include_tasks:
+    #     file: roles/base/tasks/software/packages_utilities.yaml
 
     # - name: Homebrew tap
     #   community.general.homebrew_tap:

@@ -1,0 +1,5 @@
+---
+- name: Homebrew Nginx Restart
+  ansible.builtin.command:
+    cmd: brew services restart nginx
+  changed_when: false

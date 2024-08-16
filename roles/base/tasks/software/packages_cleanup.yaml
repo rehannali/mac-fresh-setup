@@ -1,0 +1,11 @@
+---
+- name: Homebrew cache directory
+  tags: homebrew,homebrew-cache
+  ansible.builtin.shell:
+    cmd: brew --cache
+  register: homebrew_cache
+
+- name: Homebrew Cleanup
+  tags: homebrew,homebrew-cleanup
+  ansible.builtin.shell:
+    cmd: brew cleanup && rm -rf {{ homebrew_cache.stdout }}

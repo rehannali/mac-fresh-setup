@@ -1,0 +1,6 @@
+---
+telegram_chat_id: "<telegram_chat_id_here>"
+telegram_token: "<telegram_token_here>"
+
+ifttt_key: "<ifttt_key_here>"
+ifttt_webhook_event: "<ifttt_webhook_event_here>"

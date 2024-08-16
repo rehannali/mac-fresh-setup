@@ -1,0 +1,28 @@
+- name: send failure notification via telegram
+  tags: always
+  community.general.telegram:
+    token: "{{ telegram_token }}"
+    api_args:
+      chat_id: "{{ telegram_chat_id }}"
+      parse_mode: markdown
+      disable_web_page_preview: true
+      disable_notification: true
+      text: "⚠️  Ansible provision failed on *{{ ansible_hostname }}*\n\n
+        *Task*:  {{ ansible_failed_task.name }}\n
+        *Action*: {{ ansible_failed_task.action }}\n
+        *Error Message*: \n ```{{ ansible_failed_result | to_nice_json }}```"
+  changed_when: False
+
+  rescue:
+    - name: send failure notification via telegram
+      tags: always
+      community.general.telegram:
+        token: "{{ telegram_token }}"
+        api_args:
+          chat_id: "{{ telegram_chat_id }}"
+          parse_mode: markdown
+          disable_web_page_preview: true
+          disable_notification: true
+          text: "⚠️  Ansible provision failed on *{{ ansible_hostname }}*\n\n
+            The specific error couldn't be shown, check the log."
+      changed_when: False

@@ -1,0 +1,27 @@
+- name: Create Ansible log directory if it doesn't exist
+  ansible.builtin.file:
+    mode: "755"
+    path: /var/log
+    owner: root
+    state: directory
+  become: true
+
+- name: Create Ansible log file if it doesn't exist
+  ansible.builtin.file:
+    path: /var/log/ansible.log
+    mode: "644"
+    owner: root
+    state: touch
+  become: true
+
+- name: Create newsyslog configuration for Ansible log
+  ansible.builtin.blockinfile:
+    path: /etc/newsyslog.d/ansible.conf
+    mode: "644"
+    owner: root
+    block: |
+      # logfilename          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+      /var/log/ansible.log   644  7     *       $D    J
+    create: true
+  become: true
+  when: ansible_os_family == "Darwin"

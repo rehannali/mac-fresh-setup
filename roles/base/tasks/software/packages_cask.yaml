@@ -1,0 +1,65 @@
+---
+- name: Homebrew | Cask
+  community.general.homebrew_cask:
+    upgrade_all: true
+    sudo_password: "{{ ansible_become_pass }}"
+    state: latest
+    install_options: "appdir=~/Applications"
+    name:
+      - alfred
+      - alacritty
+      - android-file-transfer
+      - android-platform-tools
+      - copilot-for-xcode
+      - docker
+      - easyfind
+      - firefox
+      - font-fira-code
+      - font-source-code-pro
+      - font-cascadia-code
+      - font-cascadia-code-pl
+      - font-caskaydia-cove-nerd-font
+      - font-fira-code-nerd-font
+      - font-jetbrains-mono-nerd-font
+      - font-meslo-lg-nerd-font
+      - font-sauce-code-pro-nerd-font
+      - font-hack-nerd-font
+      - gitkraken
+      - google-chrome
+      - iterm2
+      - itsycal
+      - jetbrains-toolbox
+      - languagetool
+      - micro-snitch
+      - microsoft-office
+      - microsoft-teams
+      - macfuse
+      - postman
+      - qlcolorcode
+      - qlimagesize
+      - qlmarkdown
+      - qlstephen
+      - qlvideo
+      - quicklook-csv
+      - quicklook-json
+      - quicklookase
+      - notion
+      - simsim
+      - simpholders
+      - snagit
+      - suspicious-package
+      - sourcetree
+      - termius
+      - visual-studio-code
+      - vlc
+      - webpquicklook
+      - xcodes
+
+- name: Homebrew | Cask | Default Location
+  community.general.homebrew_cask:
+    upgrade_all: true
+    sudo_password: "{{ ansible_become_pass }}"
+    state: latest
+    install_options: "appdir=/Applications"
+    name:
+      - little-snitch

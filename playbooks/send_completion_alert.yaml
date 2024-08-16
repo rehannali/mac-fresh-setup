@@ -1,0 +1,11 @@
+- name: send completion notification via telegram
+  tags: always
+  community.general.telegram:
+    token: "{{ telegram_token }}"
+    api_args:
+      chat_id: "{{ telegram_chat_id }}"
+      parse_mode: markdown
+      text: "✔️  Ansible provision finished on *{{ ansible_hostname }}*"
+      disable_web_page_preview: true
+      disable_notification: true
+  changed_when: False

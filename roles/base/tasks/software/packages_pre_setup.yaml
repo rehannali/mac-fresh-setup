@@ -1,0 +1,22 @@
+---
+- name: Fetch Architecture Information
+  ansible.builtin.command: uname -m
+  register: architecture
+  changed_when: false
+
+- name: HomeBrew | Install Rosetta 2
+  ansible.builtin.shell: softwareupdate --install-rosetta --agree-to-license
+  become: true
+  when: architecture.stdout == "arm64"
+  changed_when: false
+
+- name: Homebrew | Pre Setup | Required Software | Mas
+  community.general.homebrew:
+    name: mas
+    state: latest
+
+- name: Homebrew | Pre Setup | Required Software | Xcode
+  community.general.mas:
+    id:
+      - 497799835 # Xcode
+    state: latest
