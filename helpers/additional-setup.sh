@@ -24,9 +24,9 @@ function configure_dotfiles {
     info "Configuring nvim"
     run mkdir -p ${HOME}/.config/nvim
 
-    run git clone https://github.com/rehannali/cpow-dotfiles.git ${SCRIPT_DIR}/cpow-dotfiles
+    # run git clone https://github.com/rehannali/cpow-dotfiles.git ${SCRIPT_DIR}/cpow-dotfiles
 
-    run cd ${SCRIPT_DIR}/cpow-dotfiles
+    # run cd ${SCRIPT_DIR}/cpow-dotfiles
 
     # run rsync -azhP init.lua ${HOME}/.config/nvim/
     # run rsync -azhP lua ${HOME}/.config/nvim/
@@ -38,12 +38,12 @@ function configure_dotfiles {
         run mv ${HOME}/.tmux.conf ${HOME}/.tmux.conf.bak.${timestamp}
     fi
 
-    run cp -af .tmux.conf ${HOME}/.tmux.conf
+    run cp -af ${SCRIPT_DIR}/config/tmux.conf ${HOME}/.tmux.conf
     run git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 
-    cd ${SCRIPT_DIR}
-    info "Removing extra config repo folder"
-    run rm -rf ${SCRIPT_DIR}/cpow-dotfiles
+    # cd ${SCRIPT_DIR}
+    # info "Removing extra config repo folder"
+    # run rm -rf ${SCRIPT_DIR}/cpow-dotfiles
 
     run rsync -azhP ${SCRIPT_DIR}/config/nvim ${HOME}/.config/
     run rsync -azhP ${SCRIPT_DIR}/config/wezterm ${HOME}/.config/
